@@ -1,7 +1,7 @@
 import next from 'next'
 import express, { Request, Response } from 'express'
 import { createServer } from "http";
-import {Server as socketio } from "socket.io"
+import { Server as socketio } from "socket.io"
 
 const port = process.env.PORT || 3000
 const dev = process.env.NODE_ENV !== 'production'
@@ -13,10 +13,43 @@ app.prepare().then(() => {
     const http_server = createServer(server)
     const io = new socketio(http_server)
 
-    io.on('connection', socket => {
-        console.log("new WS connection", socket.id);
+    // let games: IGame[] = []
 
-        socket.on("test", obj => console.log(obj));
+    io.on('connection', socket => {
+        console.log("new WS connection", socket.id, socket.rooms);
+        // console.log(io.sockets.adapter.rooms);
+
+        socket.on("makeGame", () => {
+            // games.push({
+            //     roomid: socket.id, 
+            //     playerCount: 0,
+            //     players: []
+            // })
+
+            // console.log(games);
+            
+        })
+
+
+        io.on("leaveGame", (type: string) => {
+            console.log(type);
+        })
+
+
+
+
+
+
+        socket.on("disconnect", () => {
+            console.log("socket disconnected", socket.id)
+
+            // if () {
+
+            // }
+
+            console.log(socket.rooms, "test");
+            
+        });
     })
 
 

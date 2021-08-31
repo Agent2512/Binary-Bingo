@@ -39,12 +39,54 @@ body,
 .gameTypeForm {
     width: 100%;
     height: 100%;
+    text-transform: uppercase;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    border-radius: 50%;
+
+    & > h2 {
+        font-size: 2rem;
+        width: 75%;
+        text-align: center;
+    }
+
+    & > input {
+        width: 75%;
+        height: 2rem;
+        text-align: center;
+    }
+
 
     &.gameMaster {
         background-color: #f00;
+
+        &:hover {
+            background-color: darken(#f00,  10);
+        }
     }
 
     &.player {
         background-color: #0f0;
+
+        &:hover {
+            background-color: darken(#0f0,  10);
+        }
     }
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+#gameMaster, #player {
+    color: #fff;
+    height: 100%;
+    padding: 1rem;
+
+    display: grid;
+    grid-template-rows: auto 6fr 2fr;
 }
