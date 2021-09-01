@@ -1,14 +1,24 @@
 import { useSocket } from "hooks/useSocket"
-import { useEffect } from "react"
+import { useRouter } from "next/router"
+import { useEffect, useState } from "react"
+import queryString from 'query-string';
 
 const playerPage = () => {
     const socket = useSocket()
+    const router = useRouter()
 
     useEffect(() => {
-        // socket.emit("joinGame", "test")
+        const { roomid} = queryString.parse(location.search) as {roomid: string| undefined}
 
+        if (!roomid) router.replace("/")
+    }, [])
+
+
+    useEffect(() => {
         
     }, [])
+
+    
 
 
     return (

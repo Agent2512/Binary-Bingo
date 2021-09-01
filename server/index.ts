@@ -88,9 +88,12 @@ app.prepare().then(() => {
 
 
     server.post('/getGame', (req: any, res: Response) => {
-        const query = req.body as { roomid: string | undefined }
+        const { roomid } = req.body as { roomid: string | undefined }
 
-        res.json({test: true, roomid: query.roomid})
+        if (roomid && games.map(i => i.roomid).includes(roomid)) {
+            return res.json(true)
+        }
+        else return res.json(false)
     })
 
     server.all('*', (req: Request, res: Response) => {

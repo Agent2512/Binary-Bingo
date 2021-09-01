@@ -20,14 +20,17 @@ const GameTypeBTN = (props: Props) => {
             router.push(props.type)
         }
         else {
-            let test = await fetch("/getGame", {
+            let checkRoom = await fetch("/getGame", {
                 method: "post",
                 headers: { "content-type": "application/json" },
                 body: JSON.stringify({roomid:userInput})
             }).then(res => res.json())
-            console.log( test);
-            
-            // router.push(props.type + "?roomid=" + userInput)
+
+            if (checkRoom) {
+                router.replace(props.type + "?roomid=" + userInput)
+            } else {
+                alert("no room by code")
+            }
         }
 
     }
@@ -36,10 +39,7 @@ const GameTypeBTN = (props: Props) => {
 
     return (
         <form onSubmit={handleSubmit} onClick={() => { document.getElementById("btn-" + props.type)?.click() }} className={"gameTypeForm " + props.type}>
-            <h2>be a {props.type}</h2>
-
-
-
+            <h2>{props.type}</h2>
             {props.type == "player" && <input value={userInput} onChange={handleChange} type="text" name="roomid" required />}
             <button id={"btn-" + props.type} style={{ marginTop: "10px", display: "none" }} type="submit">test</button>
         </form>
