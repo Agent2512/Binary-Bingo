@@ -1,6 +1,6 @@
 import { useSocket } from "hooks/useSocket";
 import { useEffect, useState } from "react";
-import { binaryGen } from "utils/binaryGen";
+import { binaryGen } from "server/utils/binaryGen";
 
 const gameMasterPage = () => {
     const socket = useSocket()
@@ -9,16 +9,13 @@ const gameMasterPage = () => {
     useEffect(() => {
         socket.emit("makeGame")
 
-
-        function cleanup() {
-            socket.emit("leaveGame","gameMaster")
-        }
-        return cleanup
+        socket.on("giveRoomid", i => setGameCode(i))
+        
     }, [])
     
     return (
         <main id="gameMaster">
-            <h1>game code: 0000</h1>
+            <h1 >game code: <span className="gameCode" >{gameCode}</span></h1>
         </main>
     )
 }

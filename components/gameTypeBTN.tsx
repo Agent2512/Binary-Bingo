@@ -14,13 +14,20 @@ const GameTypeBTN = (props: Props) => {
         name == "roomid" && setUserInput(value)
     }
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (props.type == "gameMaster") {
             router.push(props.type)
         }
         else {
-            router.push(props.type+"?roomid="+userInput)
+            let test = await fetch("/getGame", {
+                method: "post",
+                headers: { "content-type": "application/json" },
+                body: JSON.stringify({roomid:userInput})
+            }).then(res => res.json())
+            console.log( test);
+            
+            // router.push(props.type + "?roomid=" + userInput)
         }
 
     }
@@ -34,7 +41,7 @@ const GameTypeBTN = (props: Props) => {
 
 
             {props.type == "player" && <input value={userInput} onChange={handleChange} type="text" name="roomid" required />}
-            <button  id={"btn-" + props.type} style={{ marginTop: "10px", display: "none" }} type="submit">test</button>
+            <button id={"btn-" + props.type} style={{ marginTop: "10px", display: "none" }} type="submit">test</button>
         </form>
     )
 }

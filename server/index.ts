@@ -2,38 +2,60 @@ import next from 'next'
 import express, { Request, Response } from 'express'
 import { createServer } from "http";
 import { Server as socketio } from "socket.io"
+import { genID } from './utils/genID';
+import { IGame } from 'interfaces';
+import { json } from 'body-parser';
 
 const port = process.env.PORT || 3000
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
 const handle = app.getRequestHandler()
 
+let games: IGame[] = []
+let gameMasters: string[] = []
+let players: { playerid: string, roomid: string }[] = []
+
 app.prepare().then(() => {
     const server = express()
+    server.use(json())
     const http_server = createServer(server)
     const io = new socketio(http_server)
 
-    // let games: IGame[] = []
+
+
+
+
 
     io.on('connection', socket => {
-        console.log("new WS connection", socket.id, socket.rooms);
-        // console.log(io.sockets.adapter.rooms);
-
         socket.on("makeGame", () => {
-            // games.push({
-            //     roomid: socket.id, 
-            //     playerCount: 0,
-            //     players: []
-            // })
+            gameMasters.push(socket.id);
 
-            // console.log(games);
-            
+            const roomid = genID(socket.id)
+            socket.join(roomid)
+
+
+            games.push({
+                roomid: roomid,
+                gameMaster: socket.id,
+                playerCount: 0,
+                players: []
+            })
+
+            socket.emit("giveRoomid", roomid)
         })
 
+        socket.on("joinGame", (roomid: string) => {
+            players.push({
+                playerid: socket.id,
+                roomid: roomid
+            })
 
-        io.on("leaveGame", (type: string) => {
-            console.log(type);
+            const gameIndex = games.map(i => i.roomid).includes(roomid)
+
+            console.log("game", gameIndex, roomid);
+
         })
+
 
 
 
@@ -41,19 +63,35 @@ app.prepare().then(() => {
 
 
         socket.on("disconnect", () => {
-            console.log("socket disconnected", socket.id)
+            if (gameMasters.includes(socket.id)) {
+                console.log("gameMaster disconnect", socket.id);
+                const gameMasterIndex = gameMasters.indexOf(socket.id)
+                gameMasters.splice(gameMasterIndex, 1)
 
-            // if () {
+                for (let i = 0; i < games.length; i++) {
+                    const game = games[i];
 
-            // }
+                    if (game.gameMaster != socket.id) continue
 
-            console.log(socket.rooms, "test");
-            
+                    games.splice(i, 1)
+                    break
+                }
+            }
+
+            if (players.map(i => i.playerid).includes(socket.id)) {
+                console.log("player disconnect", socket.id);
+
+            }
+
         });
     })
 
 
+    server.post('/getGame', (req: any, res: Response) => {
+        const query = req.body as { roomid: string | undefined }
 
+        res.json({test: true, roomid: query.roomid})
+    })
 
     server.all('*', (req: Request, res: Response) => {
         return handle(req, res)
