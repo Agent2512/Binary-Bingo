@@ -7,12 +7,14 @@ const gameMasterPage = () => {
     const [gameCode, setGameCode] = useState("")
 
     useEffect(() => {
-        socket.emit("makeGame")
+        if (socket) {
+            socket.emit("makeGame")
 
-        socket.on("giveRoomid", i => setGameCode(i))
-        
-    }, [])
-    
+            socket.on("giveRoomid", i => setGameCode(i))
+        }
+
+    }, [socket])
+
     return (
         <main id="gameMaster">
             <h1 >game code: <span className="gameCode" >{gameCode}</span></h1>

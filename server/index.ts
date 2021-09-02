@@ -45,15 +45,19 @@ app.prepare().then(() => {
         })
 
         socket.on("joinGame", (roomid: string) => {
-            players.push({
-                playerid: socket.id,
-                roomid: roomid
-            })
+            const gameExists = games.map(i => i.roomid).includes(roomid)
+            console.log(socket.id, "game", gameExists, roomid);
 
-            const gameIndex = games.map(i => i.roomid).includes(roomid)
+            if (gameExists) {
+                // add player
+                players.push({
+                    playerid: socket.id,
+                    roomid: roomid
+                })
+                // player join gmae room
+                socket.join(roomid)
 
-            console.log("game", gameIndex, roomid);
-
+            }
         })
 
 
@@ -70,9 +74,7 @@ app.prepare().then(() => {
 
                 for (let i = 0; i < games.length; i++) {
                     const game = games[i];
-
                     if (game.gameMaster != socket.id) continue
-
                     games.splice(i, 1)
                     break
                 }
@@ -81,12 +83,20 @@ app.prepare().then(() => {
             if (players.map(i => i.playerid).includes(socket.id)) {
                 console.log("player disconnect", socket.id);
 
+                for (let i = 0; i < players.length; i++) {
+                    const player = players[i];
+                    if (player.playerid != socket.id) continue
+                    players.splice(i, 1)
+                    break
+                }
+
+                console.log("players", players);
             }
 
         });
     })
 
-
+    // server
     server.post('/getGame', (req: any, res: Response) => {
         const { roomid } = req.body as { roomid: string | undefined }
 
