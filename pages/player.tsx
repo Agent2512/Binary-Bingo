@@ -3,6 +3,7 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import queryString from 'query-string';
 import GameBord from "components/player/gameBord";
+import { IGame } from "interfaces";
 
 const playerPage = () => {
     const socket = useSocket()
@@ -31,7 +32,10 @@ const playerPage = () => {
         if (socket) {
             socket.emit("joinGame", roomid)
 
-            
+            socket.on("gameUpdate", (game: IGame) => {
+                console.log(game);
+                
+            })
         }
 
 

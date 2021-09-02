@@ -376,11 +376,6 @@
   "resolved" "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.4.tgz"
   "version" "15.7.4"
 
-"@types/random-number@0.0.1":
-  "integrity" "sha512-Wz9bnPf3pYtHA5voHhcOb+bqDmNyYrNEBLER1TYESr64ToKTLNLDiMTbfDlGfjnxiKbZdGw2IgqTg2rDiYg/kw=="
-  "resolved" "https://registry.npmjs.org/@types/random-number/-/random-number-0.0.1.tgz"
-  "version" "0.0.1"
-
 "@types/react-dom@^16.9.8":
   "integrity" "sha512-FIX2AVmPTGP30OUJ+0vadeIFJJ07Mh1m+U0rxfgyW34p3rTlXI+nlenvAxNn4BP36YyI9IJ/+UJ7Wu22N1pI7A=="
   "resolved" "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.9.14.tgz"
@@ -2593,11 +2588,6 @@
   dependencies:
     "inherits" "~2.0.3"
 
-"random-number@0.0.9":
-  "integrity" "sha512-ipG3kRCREi/YQpi2A5QGcvDz1KemohovWmH6qGfboVyyGdR2t/7zQz0vFxrfxpbHQgPPdtVlUDaks3aikD1Ljw=="
-  "resolved" "https://registry.npmjs.org/random-number/-/random-number-0.0.9.tgz"
-  "version" "0.0.9"
-
 "randombytes@^2.0.0", "randombytes@^2.0.1", "randombytes@^2.0.5":
   "integrity" "sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ=="
   "resolved" "https://registry.yarnpkg.com/randombytes/-/randombytes-2.1.0.tgz"
@@ -3255,6 +3245,11 @@
   "version" "2.0.3"
   dependencies:
     "debug" "^2.2.0"
+
+"unique-random@^3.0.0":
+  "integrity" "sha512-4vjtE3pH6xO5OmsSmjc6KPgHy2rbCw66BbMRLIyXkuq+WzOKA1oNkqQ+Y7Lh+sE0DrOrWMSpFkivhhzCF7J6HA=="
+  "resolved" "https://registry.npmjs.org/unique-random/-/unique-random-3.0.0.tgz"
+  "version" "3.0.0"
 
 "unique-string@^2.0.0":
   "integrity" "sha512-uNaeirEPvpZWSgzwsPGtU2zVSTrn/8L5q/IexZmH0eH6SA73CmAA5U4GwORTxQAZs95TAXLNqeLoPPNO5gZfWg=="

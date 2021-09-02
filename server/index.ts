@@ -45,18 +45,24 @@ app.prepare().then(() => {
         })
 
         socket.on("joinGame", (roomid: string) => {
-            const gameExists = games.map(i => i.roomid).includes(roomid)
-            console.log(socket.id, "game", gameExists, roomid);
+            const game = games.find(i => i.roomid == roomid)
+            // console.log(socket.id, "game", game?.roomid);
 
-            if (gameExists) {
-                // add player
+            if (game) {
+                // add player to players array
                 players.push({
                     playerid: socket.id,
                     roomid: roomid
                 })
                 // player join gmae room
                 socket.join(roomid)
+                // add player to game object
+                game.playerCount++
+                game.players.push(socket.id)
 
+                io.to(game.roomid).to(game.gameMaster).emit("gameUpdate", game)
+                // console.log("gameUpdate", game);
+                
             }
         })
 
@@ -81,16 +87,33 @@ app.prepare().then(() => {
             }
 
             if (players.map(i => i.playerid).includes(socket.id)) {
-                console.log("player disconnect", socket.id);
+                // console.log("player disconnect", socket.id);
 
                 for (let i = 0; i < players.length; i++) {
+                    // get player
                     const player = players[i];
+                    // not player continue
                     if (player.playerid != socket.id) continue
+                    // find game
+                    const game = games.find(i => i.roomid == player.roomid)
+                    // validat game
+                    if (game) {
+                        // reduse player const
+                        game.playerCount--;
+                        const gamePlayerIndex = game.players.indexOf(player.playerid)
+                        game.players.splice(gamePlayerIndex, 1)
+
+
+                        io.to(game.roomid).to(game.gameMaster).emit("gameUpdate", game)
+                    }
+
                     players.splice(i, 1)
+
+
                     break
                 }
 
-                console.log("players", players);
+                // console.log("players", players);
             }
 
         });
