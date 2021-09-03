@@ -89,11 +89,28 @@ body,
 
     display: grid;
     grid-template-rows: auto 6fr 2fr;
+
+
+
+    .binaryNumber {
+        width: fit-content;
+        height: fit-content;
+        margin: auto;
+        font-size: 6rem;
+        letter-spacing: 2rem;
+    }
 }
 
 .gameCode {
     letter-spacing: 2px; 
 }
+
+
+
+
+
+
+
 
 
 

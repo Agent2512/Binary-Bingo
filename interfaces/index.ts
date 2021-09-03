@@ -3,4 +3,5 @@ export interface IGame {
     gameMaster: string;
     playerCount: number;
     players: string[]
+    numbers: number[]
 }

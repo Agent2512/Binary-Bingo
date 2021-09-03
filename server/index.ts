@@ -38,7 +38,8 @@ app.prepare().then(() => {
                 roomid: roomid,
                 gameMaster: socket.id,
                 playerCount: 0,
-                players: []
+                players: [],
+                numbers: []
             })
 
             socket.emit("giveRoomid", roomid)
@@ -66,7 +67,17 @@ app.prepare().then(() => {
             }
         })
 
+        socket.on("numbersUpdate", (numbers:number[]) => {
+            const {id} = socket
+            
+            const game = games.find(i => i.gameMaster == id)
 
+            if (game) {
+                game.numbers = numbers
+
+                io.to(game.roomid).to(game.gameMaster).emit("gameUpdate", game)
+            }
+        })
 
 
 
@@ -74,7 +85,8 @@ app.prepare().then(() => {
 
         socket.on("disconnect", () => {
             if (gameMasters.includes(socket.id)) {
-                console.log("gameMaster disconnect", socket.id);
+                // console.log("gameMaster disconnect", socket.id);
+
                 const gameMasterIndex = gameMasters.indexOf(socket.id)
                 gameMasters.splice(gameMasterIndex, 1)
 

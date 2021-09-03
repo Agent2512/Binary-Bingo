@@ -2,10 +2,11 @@ import { useEffect, useState } from "react"
 import { io, Socket } from "socket.io-client"
 import { DefaultEventsMap } from "socket.io/dist/typed-events"
 
+export type socket = Socket<DefaultEventsMap, DefaultEventsMap>;
 
-export function useSocket() {
+export default function useSocket() {
     // let socketIo: Socket<DefaultEventsMap, DefaultEventsMap> 
-    const [socketIo, setSocketIo] = useState<Socket<DefaultEventsMap, DefaultEventsMap>|undefined>(undefined)
+    const [socketIo, setSocketIo] = useState<socket|undefined>(undefined)
 
     useEffect(() => {
         setSocketIo(io())

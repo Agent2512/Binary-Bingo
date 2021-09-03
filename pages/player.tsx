@@ -1,4 +1,4 @@
-import { useSocket } from "hooks/useSocket"
+import useSocket from "hooks/useSocket"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import queryString from 'query-string';
