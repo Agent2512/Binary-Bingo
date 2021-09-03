@@ -79,19 +79,28 @@ app.prepare().then(() => {
             }
         })
 
+        socket.on("playerLines", (numOfLines:number) => {
+            const {id} = socket
+            
+            const game = games.find(i => i.players.includes(id))
+
+            if (game) {
+                io.to(game.gameMaster).emit("playerGotLine", numOfLines)
+            }
+        })
+
 
 
 
 
         socket.on("disconnect", () => {
             if (gameMasters.includes(socket.id)) {
-                // console.log("gameMaster disconnect", socket.id);
-
                 const gameMasterIndex = gameMasters.indexOf(socket.id)
                 gameMasters.splice(gameMasterIndex, 1)
 
                 for (let i = 0; i < games.length; i++) {
                     const game = games[i];
+                    io.to(game.roomid).emit("forceLeave")
                     if (game.gameMaster != socket.id) continue
                     games.splice(i, 1)
                     break
@@ -99,8 +108,6 @@ app.prepare().then(() => {
             }
 
             if (players.map(i => i.playerid).includes(socket.id)) {
-                // console.log("player disconnect", socket.id);
-
                 for (let i = 0; i < players.length; i++) {
                     // get player
                     const player = players[i];

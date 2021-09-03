@@ -9,7 +9,7 @@ const playerPage = () => {
     const socket = useSocket()
     const router = useRouter()
     const [gameCode, setGameCode] = useState("")
-
+    const [bord, setBord] = useState<JSX.Element>()
 
     useEffect(() => {
         const { roomid} = queryString.parse(location.search) as {roomid: string| undefined}
@@ -30,11 +30,12 @@ const playerPage = () => {
         }
         
         if (socket) {
+            setBord(<GameBord socket={socket} />)
+
             socket.emit("joinGame", roomid)
 
-            socket.on("gameUpdate", (game: IGame) => {
-                console.log(game);
-                
+            socket.on("forceLeave", () => {
+                router.replace("/")
             })
         }
 
@@ -43,7 +44,7 @@ const playerPage = () => {
 
     return (
         <main id="player">
-            <GameBord />
+            {bord}
         </main>
     )
 }

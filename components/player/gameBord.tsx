@@ -1,11 +1,11 @@
+import { Tsocket } from "hooks/useSocket";
+import { IGame } from "interfaces";
 import { useEffect, useState } from "react";
-import { Socket } from "socket.io";
-import { DefaultEventsMap } from "socket.io-client/build/typed-events";
 import makeNumCol from "utils/makeNumCol";
 import Spot from "./spot"
 
 interface Props {
-    socket?: Socket<DefaultEventsMap, DefaultEventsMap>
+    socket: Tsocket
 }
 
 interface Irows {
@@ -83,7 +83,7 @@ const GameBord = (props: Props) => {
 
     const handleRow = (row: string, state: boolean) => {
         setCheckedRow(pre => {
-            let newObj = {...pre}
+            let newObj = { ...pre }
             if (state) {
                 newObj[row]++
             }
@@ -91,14 +91,74 @@ const GameBord = (props: Props) => {
                 newObj[row]--
             }
 
+            if (newObj[row] < 0) {
+                newObj[row] = 0
+            }
+
             return newObj
         })
     }
 
+    const [masterNumbers, setMasterNumbers] = useState<number[]>([])
+
+
     useEffect(() => {
-        console.log(checkedRow);
+        const socket = props.socket
+
+        if (socket) {
+
+
+
+            socket.on("gameUpdate", (game: IGame) => {
+                setMasterNumbers(game.numbers)
+            })
+        }
+    }, [props.socket])
+
+    const [numOfLines, setNumOfLines] = useState(0)
+
+    useEffect(() => {
+        // console.log(masterNumbers);
+        
+        let _numOfLines = 0
+        for (const key in checkedRow) {
+            const cRow = checkedRow[key];
+            const mRow = mainRows[key]
+
+            if (cRow == 5) {
+                let valid = false
+                let nums = mRow.filter(i => i != null)
+                for (const num of nums) {
+                    if (num) {
+                        console.log(masterNumbers.includes(num));
+                        valid = masterNumbers.includes(num)
+                        if (valid) {
+                            
+                            valid = masterNumbers.includes(num)
+                        }
+                    }
+
+                }
+
+
+                if (valid) {
+                    _numOfLines++
+                }
+            }
+        }
+
+
+        _numOfLines != 0 && setNumOfLines(_numOfLines)
     }, [checkedRow])
 
+
+    useEffect(() => {
+        const socket = props.socket
+        
+        if (socket && numOfLines != 0) {
+            socket.emit("playerLines", numOfLines)
+        }
+    }, [numOfLines])
 
     return (
         <div className="gameBord" >
