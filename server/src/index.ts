@@ -3,7 +3,7 @@ import express, { Request, Response } from 'express'
 import { createServer } from "http";
 import { Server as socketio } from "socket.io"
 import { genID } from './utils/genID';
-import { IGame } from 'interfaces';
+import { IGame } from 'server/src/interfaces';
 import { json } from 'body-parser';
 
 const port = process.env.PORT || 3000

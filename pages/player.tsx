@@ -3,12 +3,11 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import queryString from 'query-string';
 import GameBord from "components/player/gameBord";
-import { IGame } from "interfaces";
 
 const playerPage = () => {
     const socket = useSocket()
     const router = useRouter()
-    const [gameCode, setGameCode] = useState("")
+    const [_gameCode, setGameCode] = useState("")
     const [bord, setBord] = useState<JSX.Element>()
 
     useEffect(() => {

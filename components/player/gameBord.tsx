@@ -1,5 +1,5 @@
 import { Tsocket } from "hooks/useSocket";
-import { IGame } from "interfaces";
+import { IGame } from "server/src/interfaces";
 import { useEffect, useState } from "react";
 import makeNumCol from "utils/makeNumCol";
 import Spot from "./spot"

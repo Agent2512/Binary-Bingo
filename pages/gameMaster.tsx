@@ -1,7 +1,7 @@
 import Results from "components/gameMaster/results";
 import ShowScreen from "components/gameMaster/showScreen";
 import useSocket from "hooks/useSocket";
-import { IGame } from "interfaces";
+import { IGame } from "server/src/interfaces";
 import { useEffect, useState } from "react";
 import { binaryGen } from "utils/binaryGen";
 import { uniqueRandom } from "utils/makeNumCol";

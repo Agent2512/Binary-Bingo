@@ -2,7 +2,8 @@
     "extends": "./tsconfig.json",
     "compilerOptions": {
         "module": "commonjs",
-        "outDir": "dist",
+        "rootDir": "server/src",
+        "outDir": "server/dist",
         "target": "es2017",
         "isolatedModules": false,
         "noEmit": false
