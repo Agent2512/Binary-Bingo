@@ -12,7 +12,7 @@ body,
 }
 
 #__next {
-    background-color: #000;
+    background-color: #cfcfcf;;
 
     display: flex;
     align-content: center;
@@ -83,7 +83,7 @@ body,
 }
 
 #gameMaster{
-    color: #fff;
+    color: #222;
     height: 100%;
     padding: 1rem;
 
@@ -133,7 +133,7 @@ body,
     .box {
         padding: .7rem;
 
-        border-color: #fff;
+        border-color: #087935;
         border-width: .2rem;
         border-style: solid;
         border-radius: .5rem;
@@ -148,6 +148,64 @@ body,
     }
 }
 
+.bottom {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    button {
+        font-size: 2rem;
+        padding: 1rem;
+        cursor: pointer;
+        border-radius: 0.5rem;
+        border: none;
+        outline: none;
+        background: #087935;
+        color: #e7eaf0;
+    }
+
+    p {
+        font-size: 3rem;
+    }
+
+    div {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+    }
+}
+
+.results {
+    width: 100%;
+    height: 100%;
+    color: white;
+    background-color: black;
+    position: fixed;
+    padding: 1rem;
+
+    display: grid;
+    grid-template-rows: 9fr 1fr;
+
+    .box {
+        display: flex;
+        
+        gap: 1rem;
+        font-size: 2rem;
+
+        
+    }
+    button {
+        font-size: 2rem;
+        padding: 1rem;
+        cursor: pointer;
+        border-radius: 0.5rem;
+        border: none;
+        outline: none;
+        background: #087935;
+        color: #e7eaf0;
+    }
+}
 
 
 
@@ -175,7 +233,7 @@ body,
     flex-direction: column;
     gap: .5rem;
 
-    border-color: #fff;
+    border-color: #087935;
     border-width: .2rem;
     border-style: solid;
     border-radius: .5rem;
@@ -194,7 +252,7 @@ body,
     .spot {
         color: #fff;
 
-        border-color: #fff;
+        border-color: #087935;
         border-width: .2rem;
         border-style: solid;
         border-radius: .5rem;
@@ -202,9 +260,11 @@ body,
         height: 5vw;
         aspect-ratio: 1/1;
 
-        background-color: #000;
+        background-color: #222;
 
         padding: 0;
+
+        font-size: 1rem;
 
         &.test {
             background-color: #fff

@@ -1,3 +1,4 @@
+import Results from "components/gameMaster/results";
 import ShowScreen from "components/gameMaster/showScreen";
 import useSocket from "hooks/useSocket";
 import { IGame } from "interfaces";
@@ -11,6 +12,9 @@ const gameMasterPage = () => {
     const [numbers, setNumbers] = useState<number[]>([])
     const [showValue, setShowValue] = useState("")
     const [playerCount, setPlayerCount] = useState(0)
+    const [timer, setTimer] = useState(15)
+    const [masterNumbers, setMasterNumbers] = useState<number[]>([])
+    const [showNumber, setShowNumber] = useState(false)
 
     useEffect(() => {
         if (socket) {
@@ -20,12 +24,13 @@ const gameMasterPage = () => {
 
             socket.on("gameUpdate", (game: IGame) => {
                 setPlayerCount(game.playerCount)
-                console.log(game.numbers);
+                setMasterNumbers(game.numbers)
+                // console.log(game.numbers);
 
             })
 
             socket.on("playerGotLine", (numOfLines: number) => {
-                console.log(numOfLines);
+                // console.log(numOfLines);
                 setShowValue(numOfLines.toString())
             })
         }
@@ -39,7 +44,7 @@ const gameMasterPage = () => {
                 setShowValue("")
             }, 3000);
         }
-        
+
     }, [showValue])
 
     useEffect(() => {
@@ -67,26 +72,42 @@ const gameMasterPage = () => {
                 return newArr
             })
         }
-        
+
 
 
     }
 
     useEffect(() => {
+        let intval = 15
+
         next()
-        let intval = setInterval(() => {
-            next()
-        }, 1000*15)
-        
+
+        setInterval(() => {
+            setTimer(pre => {
+                if (pre == 0) {
+                    next()
+
+                    return intval
+                }
+
+                return pre - 1
+            })
+        }, 1000)
+
         // return clearInterval(intval)
     }, [])
+
+
+    const showNum = () => {
+        setShowNumber(pre => !pre)
+    }
 
     return (
         <>
             <main id="gameMaster">
                 <div className="top">
-                <h1 >game code: <span className="gameCode" >{gameCode}</span></h1>
-                <p>playerCount: {playerCount}</p>
+                    <h1 >game code: <span className="gameCode" >{gameCode}</span></h1>
+                    <p>playerCount: {playerCount}</p>
                 </div>
 
                 <div className="numbers" >
@@ -102,10 +123,16 @@ const gameMasterPage = () => {
                     {numbers[0] && binaryGen(numbers[numbers.length - 1]).split("").map((v, i) => <p key={i} >{v}</p>)}
                 </div>
 
-                <button onClick={next} >next number</button>
+                <div className="bottom">
+                    <div>
+                        <button onClick={next} >next number</button>
+                        <button onClick={showNum} >show number</button>
+                    </div>
+                    <p>{timer} S</p>
+                </div>
             </main>
-            {showValue&& <ShowScreen value={showValue} />}
-            {/* {numbers.map(i => <p style={{color:"#fff"}}  >{i}</p>)} */}
+            {showValue && <ShowScreen value={showValue} />}
+            {showNumber&&<Results func={showNum} numbers={masterNumbers} />}
         </>
     )
 }
